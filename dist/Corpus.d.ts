@@ -38,7 +38,7 @@ export declare class Corpus {
      *
      * @return size which holds the total number of words.
      */
-    numberOfWords(): Number;
+    numberOfWords(): number;
     /**
      * The contains method takes a String word as an input and checks whether wordList {@link CounterHashMap} has the
      * given word and returns true if so, otherwise returns false.

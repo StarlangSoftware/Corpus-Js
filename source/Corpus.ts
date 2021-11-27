@@ -79,7 +79,7 @@ export class Corpus {
      *
      * @return size which holds the total number of words.
      */
-    numberOfWords(): Number{
+    numberOfWords(): number{
         let size = 0;
         for (let s of this.sentences) {
             size += s.wordCount();
