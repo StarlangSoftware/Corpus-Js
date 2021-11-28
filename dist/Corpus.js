@@ -213,8 +213,8 @@
          * @param seed value to randomize shuffling.
          */
         shuffleSentences(seed) {
-            for (let i = this.sentences.length; i > 0; i--) {
-                let randomIndex = Math.floor(Math.random() * i);
+            for (let i = this.sentences.length - 1; i > 0; i--) {
+                let randomIndex = Math.floor(Math.random() * (i + 1));
                 [this.sentences[i], this.sentences[randomIndex]] =
                     [this.sentences[randomIndex], this.sentences[i]];
             }
