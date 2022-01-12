@@ -215,11 +215,7 @@
          */
         shuffleSentences(seed) {
             let random = new Random_1.Random(seed);
-            for (let i = this.sentences.length - 1; i > 0; i--) {
-                let randomIndex = random.nextInt(i + 1);
-                [this.sentences[i], this.sentences[randomIndex]] =
-                    [this.sentences[randomIndex], this.sentences[i]];
-            }
+            random.shuffle(this.sentences);
         }
         /**
          * The getTrainCorpus method takes two integer inputs foldNo and foldCount for determining train data size and count of fold respectively.
