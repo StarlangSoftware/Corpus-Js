@@ -5,6 +5,7 @@ import {Word} from "nlptoolkit-dictionary/dist/Dictionary/Word";
 import {SentenceSplitter} from "./SentenceSplitter";
 import * as fs from "fs";
 import {LanguageChecker} from "./LanguageChecker";
+import {Random} from "nlptoolkit-util/dist/Random";
 
 export class Corpus {
 
@@ -220,8 +221,9 @@ export class Corpus {
      * @param seed value to randomize shuffling.
      */
     shuffleSentences(seed: number){
+        let random = new Random(seed)
         for (let i = this.sentences.length - 1; i > 0; i--){
-            let randomIndex = Math.floor(Math.random() * (i + 1));
+            let randomIndex = random.nextInt(i + 1);
             [this.sentences[i], this.sentences[randomIndex]] =
                 [this.sentences[randomIndex], this.sentences[i]];
         }

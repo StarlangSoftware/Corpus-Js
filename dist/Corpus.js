@@ -4,7 +4,7 @@
         if (v !== undefined) module.exports = v;
     }
     else if (typeof define === "function" && define.amd) {
-        define(["require", "exports", "./Paragraph", "./Sentence", "nlptoolkit-datastructure/dist/CounterHashMap", "./SentenceSplitter", "fs", "./LanguageChecker"], factory);
+        define(["require", "exports", "./Paragraph", "./Sentence", "nlptoolkit-datastructure/dist/CounterHashMap", "./SentenceSplitter", "fs", "./LanguageChecker", "nlptoolkit-util/dist/Random"], factory);
     }
 })(function (require, exports) {
     "use strict";
@@ -16,6 +16,7 @@
     const SentenceSplitter_1 = require("./SentenceSplitter");
     const fs = require("fs");
     const LanguageChecker_1 = require("./LanguageChecker");
+    const Random_1 = require("nlptoolkit-util/dist/Random");
     class Corpus {
         /**
          * Another constructor of {@link Corpus} class which takes {@link SentenceSplitter}  as an input besides the file name.
@@ -213,8 +214,9 @@
          * @param seed value to randomize shuffling.
          */
         shuffleSentences(seed) {
+            let random = new Random_1.Random(seed);
             for (let i = this.sentences.length - 1; i > 0; i--) {
-                let randomIndex = Math.floor(Math.random() * (i + 1));
+                let randomIndex = random.nextInt(i + 1);
                 [this.sentences[i], this.sentences[randomIndex]] =
                     [this.sentences[randomIndex], this.sentences[i]];
             }
