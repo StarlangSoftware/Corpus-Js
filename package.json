@@ -1,6 +1,6 @@
 {
   "name": "nlptoolkit-corpus",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "Corpus Library",
   "main": "index.js",
   "types": "index.js",

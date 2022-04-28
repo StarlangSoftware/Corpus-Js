@@ -153,7 +153,7 @@ export abstract class SentenceSplitter {
      */
     private isApostrophe(line: string, i: number): boolean{
         let apostropheLetters = this.upperCaseLetters() + this.lowerCaseLetters() + Language.EXTENDED_LANGUAGE_CHARACTERS + Language.DIGITS;
-        if (i + 1 < line.length) {
+        if (i > 0 && i + 1 < line.length) {
             let previousChar = line.charAt(i - 1);
             let nextChar = line.charAt(i + 1);
             return apostropheLetters.includes(previousChar) && apostropheLetters.includes(nextChar);
@@ -172,7 +172,7 @@ export abstract class SentenceSplitter {
      * @return true if previous char and next char is a digit, false otherwise.
      */
     private numberExistsBeforeAndAfter(line: string, i: number){
-        if (i + 1 < line.length && i > 0) {
+        if (i > 0 && i + 1 < line.length) {
             let previousChar = line.charAt(i - 1);
             let nextChar = line.charAt(i + 1);
             return Language.DIGITS.includes(previousChar) && Language.DIGITS.includes(nextChar);
@@ -191,7 +191,7 @@ export abstract class SentenceSplitter {
      * @return true if previous char, next char and two next chars are digit, false otherwise.
      */
     private isTime(line: string, i: number): boolean{
-        if (i + 2 < line.length) {
+        if (i > 0 && i + 2 < line.length) {
             let previousChar = line.charAt(i - 1);
             let nextChar = line.charAt(i + 1);
             let twoNextChar = line.charAt(i + 2);

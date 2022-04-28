@@ -157,7 +157,7 @@
          */
         isApostrophe(line, i) {
             let apostropheLetters = this.upperCaseLetters() + this.lowerCaseLetters() + Language_1.Language.EXTENDED_LANGUAGE_CHARACTERS + Language_1.Language.DIGITS;
-            if (i + 1 < line.length) {
+            if (i > 0 && i + 1 < line.length) {
                 let previousChar = line.charAt(i - 1);
                 let nextChar = line.charAt(i + 1);
                 return apostropheLetters.includes(previousChar) && apostropheLetters.includes(nextChar);
@@ -176,7 +176,7 @@
          * @return true if previous char and next char is a digit, false otherwise.
          */
         numberExistsBeforeAndAfter(line, i) {
-            if (i + 1 < line.length && i > 0) {
+            if (i > 0 && i + 1 < line.length) {
                 let previousChar = line.charAt(i - 1);
                 let nextChar = line.charAt(i + 1);
                 return Language_1.Language.DIGITS.includes(previousChar) && Language_1.Language.DIGITS.includes(nextChar);
@@ -195,7 +195,7 @@
          * @return true if previous char, next char and two next chars are digit, false otherwise.
          */
         isTime(line, i) {
-            if (i + 2 < line.length) {
+            if (i > 0 && i + 2 < line.length) {
                 let previousChar = line.charAt(i - 1);
                 let nextChar = line.charAt(i + 1);
                 let twoNextChar = line.charAt(i + 2);
