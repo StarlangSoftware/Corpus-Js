@@ -4,9 +4,9 @@ import {Language} from "nlptoolkit-dictionary/dist/Language/Language";
 
 export abstract class SentenceSplitter {
 
-    SEPARATORS = "\n()[]{}\"'\u05F4\uFF02\u055B";
+    SEPARATORS = "\n()[]{}\"'\u05F4\uFF02\u055B’”‘“–\u00AD\u200B\t&\u2009\u202F\uFEFF";
     SENTENCE_ENDERS = ".?!…";
-    PUNCTUATION_CHARACTERS = ",:;";
+    PUNCTUATION_CHARACTERS = ",:;‚";
 
     abstract shortCuts(): Array<string>
     abstract lowerCaseLetters(): string
@@ -22,7 +22,7 @@ export abstract class SentenceSplitter {
      */
     private listContains(currentWord: string):boolean{
         for (let shortcut of this.shortCuts()) {
-            if (currentWord.toLocaleLowerCase("tr") == shortcut) {
+            if (currentWord.toLocaleLowerCase("tr") == shortcut.toLocaleLowerCase("tr")) {
                 return true;
             }
         }
@@ -278,6 +278,18 @@ export abstract class SentenceSplitter {
                         case '\u05F4':
                             specialQuotaCount--;
                             break;
+                        case '“':
+                            specialQuotaCount++;
+                            break;
+                        case '”':
+                            specialQuotaCount--;
+                            break;
+                        case '‘':
+                            specialQuotaCount++;
+                            break;
+                        case '’':
+                            specialQuotaCount--;
+                            break;
                         case '(':
                             roundParenthesisCount++;
                             break;
@@ -310,6 +322,8 @@ export abstract class SentenceSplitter {
                     }
                     if (line.charAt(i) == '.' && currentWord != "" && (webMode || emailMode || (Language.DIGITS.includes(line.charAt(i - 1)) && !this.isNextCharUpperCaseOrDigit(line, i + 1)))) {
                         currentWord = currentWord + line.charAt(i);
+                        currentSentence.addWord(new Word(currentWord));
+                        currentWord = "";
                     } else {
                         if (line.charAt(i) == '.' && (this.listContains(currentWord) || this.isNameShortcut(currentWord))) {
                             currentWord = currentWord + line.charAt(i);

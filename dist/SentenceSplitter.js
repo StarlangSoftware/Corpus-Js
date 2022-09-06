@@ -15,9 +15,9 @@
     const Language_1 = require("nlptoolkit-dictionary/dist/Language/Language");
     class SentenceSplitter {
         constructor() {
-            this.SEPARATORS = "\n()[]{}\"'\u05F4\uFF02\u055B";
+            this.SEPARATORS = "\n()[]{}\"'\u05F4\uFF02\u055B’”‘“–\u00AD\u200B\t&\u2009\u202F\uFEFF";
             this.SENTENCE_ENDERS = ".?!…";
-            this.PUNCTUATION_CHARACTERS = ",:;";
+            this.PUNCTUATION_CHARACTERS = ",:;‚";
         }
         /**
          * The listContains method has a String array shortcuts which holds the possible abbreviations that might end with a '.' but not a
@@ -29,7 +29,7 @@
          */
         listContains(currentWord) {
             for (let shortcut of this.shortCuts()) {
-                if (currentWord.toLocaleLowerCase("tr") == shortcut) {
+                if (currentWord.toLocaleLowerCase("tr") == shortcut.toLocaleLowerCase("tr")) {
                     return true;
                 }
             }
@@ -282,6 +282,18 @@
                             case '\u05F4':
                                 specialQuotaCount--;
                                 break;
+                            case '“':
+                                specialQuotaCount++;
+                                break;
+                            case '”':
+                                specialQuotaCount--;
+                                break;
+                            case '‘':
+                                specialQuotaCount++;
+                                break;
+                            case '’':
+                                specialQuotaCount--;
+                                break;
                             case '(':
                                 roundParenthesisCount++;
                                 break;
@@ -315,6 +327,8 @@
                         }
                         if (line.charAt(i) == '.' && currentWord != "" && (webMode || emailMode || (Language_1.Language.DIGITS.includes(line.charAt(i - 1)) && !this.isNextCharUpperCaseOrDigit(line, i + 1)))) {
                             currentWord = currentWord + line.charAt(i);
+                            currentSentence.addWord(new Word_1.Word(currentWord));
+                            currentWord = "";
                         }
                         else {
                             if (line.charAt(i) == '.' && (this.listContains(currentWord) || this.isNameShortcut(currentWord))) {
