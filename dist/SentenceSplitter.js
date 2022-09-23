@@ -18,6 +18,7 @@
             this.SEPARATORS = "\n()[]{}\"'\u05F4\uFF02\u055B’”‘“–\u00AD\u200B\t&\u2009\u202F\uFEFF";
             this.SENTENCE_ENDERS = ".?!…";
             this.PUNCTUATION_CHARACTERS = ",:;‚";
+            this.APOSTROPHES = "'’‘\u055B";
         }
         /**
          * The listContains method has a String array shortcuts which holds the possible abbreviations that might end with a '.' but not a
@@ -258,7 +259,7 @@
             let sentences = new Array();
             while (i < line.length) {
                 if (this.SEPARATORS.includes(line.charAt(i))) {
-                    if (line.charAt(i) == '\'' && currentWord != "" && this.isApostrophe(line, i)) {
+                    if (this.APOSTROPHES.includes(line.charAt(i)) && currentWord != "" && this.isApostrophe(line, i)) {
                         currentWord = currentWord + line.charAt(i);
                     }
                     else {
@@ -337,38 +338,43 @@
                                 currentWord = "";
                             }
                             else {
-                                if (currentWord != "") {
-                                    currentSentence.addWord(new Word_1.Word(this.repeatControl(currentWord, webMode || emailMode)));
+                                if (line.charAt(i) == '.' && this.numberExistsBeforeAndAfter(line, i)) {
+                                    currentWord = currentWord + line.charAt(i);
                                 }
-                                currentWord = "" + line.charAt(i);
-                                do {
-                                    i++;
-                                } while (i < line.length && this.SENTENCE_ENDERS.includes(line.charAt(i)));
-                                i--;
-                                currentSentence.addWord(new Word_1.Word(currentWord));
-                                if (roundParenthesisCount == 0 && bracketCount == 0 && curlyBracketCount == 0 && quotaCount == 0) {
-                                    if (i + 1 < line.length && line.charAt(i + 1) == '\'' && apostropheCount == 1 && this.isNextCharUpperCaseOrDigit(line, i + 2)) {
-                                        currentSentence.addWord(new Word_1.Word("'"));
-                                        i++;
-                                        sentences.push(currentSentence);
-                                        currentSentence = new Sentence_1.Sentence();
+                                else {
+                                    if (currentWord != "") {
+                                        currentSentence.addWord(new Word_1.Word(this.repeatControl(currentWord, webMode || emailMode)));
                                     }
-                                    else {
-                                        if (i + 2 < line.length && line.charAt(i + 1) == ' ' && line.charAt(i + 2) == '\'' && apostropheCount == 1 && this.isNextCharUpperCaseOrDigit(line, i + 3)) {
+                                    currentWord = "" + line.charAt(i);
+                                    do {
+                                        i++;
+                                    } while (i < line.length && this.SENTENCE_ENDERS.includes(line.charAt(i)));
+                                    i--;
+                                    currentSentence.addWord(new Word_1.Word(currentWord));
+                                    if (roundParenthesisCount == 0 && bracketCount == 0 && curlyBracketCount == 0 && quotaCount == 0) {
+                                        if (i + 1 < line.length && line.charAt(i + 1) == '\'' && apostropheCount == 1 && this.isNextCharUpperCaseOrDigit(line, i + 2)) {
                                             currentSentence.addWord(new Word_1.Word("'"));
-                                            i += 2;
+                                            i++;
                                             sentences.push(currentSentence);
                                             currentSentence = new Sentence_1.Sentence();
                                         }
                                         else {
-                                            if (this.isNextCharUpperCaseOrDigit(line, i + 1)) {
+                                            if (i + 2 < line.length && line.charAt(i + 1) == ' ' && line.charAt(i + 2) == '\'' && apostropheCount == 1 && this.isNextCharUpperCaseOrDigit(line, i + 3)) {
+                                                currentSentence.addWord(new Word_1.Word("'"));
+                                                i += 2;
                                                 sentences.push(currentSentence);
                                                 currentSentence = new Sentence_1.Sentence();
                                             }
+                                            else {
+                                                if (this.isNextCharUpperCaseOrDigit(line, i + 1)) {
+                                                    sentences.push(currentSentence);
+                                                    currentSentence = new Sentence_1.Sentence();
+                                                }
+                                            }
                                         }
                                     }
+                                    currentWord = "";
                                 }
-                                currentWord = "";
                             }
                         }
                     }

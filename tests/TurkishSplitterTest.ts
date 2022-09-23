@@ -38,5 +38,9 @@ describe('TurkishSplitterTest', function() {
             assert.deepStrictEqual(1, splitter.split("Burada II. Murat ve I. Ahmet oyun oynadı").length);
             assert.deepStrictEqual(8, splitter.split("Burada II. Murat ve I. Ahmet oyun oynadı")[0].wordCount());
         });
+        it('testSplit7', function() {
+            assert.deepStrictEqual(1, splitter.split("1.87 cm boyunda ve 84 kg ağırlığındaydı").length);
+            assert.deepStrictEqual(7, splitter.split("1.87 cm boyunda ve 84 kg ağırlığındaydı")[0].wordCount());
+        });
     });
 });

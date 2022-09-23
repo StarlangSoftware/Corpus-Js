@@ -3,6 +3,7 @@ export declare abstract class SentenceSplitter {
     SEPARATORS: string;
     SENTENCE_ENDERS: string;
     PUNCTUATION_CHARACTERS: string;
+    APOSTROPHES: string;
     abstract shortCuts(): Array<string>;
     abstract lowerCaseLetters(): string;
     abstract upperCaseLetters(): string;
