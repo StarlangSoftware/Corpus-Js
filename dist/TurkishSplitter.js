@@ -13,9 +13,17 @@
     const SentenceSplitter_1 = require("./SentenceSplitter");
     const TurkishLanguage_1 = require("nlptoolkit-dictionary/dist/Language/TurkishLanguage");
     class TurkishSplitter extends SentenceSplitter_1.SentenceSplitter {
+        /**
+         * Returns Turkish lowercase letters.
+         * @return Turkish lowercase letters.
+         */
         lowerCaseLetters() {
             return TurkishLanguage_1.TurkishLanguage.LOWERCASE_LETTERS;
         }
+        /**
+         * Returns shortcut words in Turkish language.
+         * @return Shortcut words in Turkish language.
+         */
         shortCuts() {
             return ["alb", "bnb", "bkz", "bşk", "co", "dr", "dç", "der", "em", "gn",
                 "hz", "kd", "kur", "kuv", "ltd", "md", "mr", "mö", "muh", "müh",
@@ -32,6 +40,10 @@
                 "vol", "kom", "sok", "apt", "elk", "mad", "ort", "cap", "ste", "exc",
                 "ef"];
         }
+        /**
+         * Returns Turkish UPPERCASE letters.
+         * @return Turkish UPPERCASE letters.
+         */
         upperCaseLetters() {
             return TurkishLanguage_1.TurkishLanguage.UPPERCASE_LETTERS;
         }

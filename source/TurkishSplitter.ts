@@ -3,10 +3,18 @@ import {TurkishLanguage} from "nlptoolkit-dictionary/dist/Language/TurkishLangua
 
 export class TurkishSplitter extends SentenceSplitter{
 
+    /**
+     * Returns Turkish lowercase letters.
+     * @return Turkish lowercase letters.
+     */
     lowerCaseLetters(): string {
         return TurkishLanguage.LOWERCASE_LETTERS;
     }
 
+    /**
+     * Returns shortcut words in Turkish language.
+     * @return Shortcut words in Turkish language.
+     */
     shortCuts(): Array<string> {
         return ["alb", "bnb", "bkz", "bşk", "co", "dr", "dç", "der", "em", "gn",
             "hz", "kd", "kur", "kuv", "ltd", "md", "mr", "mö", "muh", "müh",
@@ -24,6 +32,10 @@ export class TurkishSplitter extends SentenceSplitter{
             "ef"];
     }
 
+    /**
+     * Returns Turkish UPPERCASE letters.
+     * @return Turkish UPPERCASE letters.
+     */
     upperCaseLetters(): string {
         return TurkishLanguage.UPPERCASE_LETTERS;
     }
