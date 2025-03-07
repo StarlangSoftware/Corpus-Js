@@ -4,6 +4,7 @@ export declare abstract class SentenceSplitter {
     SENTENCE_ENDERS: string;
     PUNCTUATION_CHARACTERS: string;
     APOSTROPHES: string;
+    HYPHENS: string;
     abstract shortCuts(): Array<string>;
     abstract lowerCaseLetters(): string;
     abstract upperCaseLetters(): string;
@@ -103,6 +104,15 @@ export declare abstract class SentenceSplitter {
      * @return true if previous char, next char and two next chars are digit, false otherwise.
      */
     private isTime;
+    /**
+     * The onlyOneLetterExistsBeforeOrAfter method takes a String line and an integer i as inputs. Then, it returns true if
+     * only one letter exists before or after the given index, false otherwise.
+     *
+     * @param line String input to check.
+     * @param i    index.
+     * @return true if only one letter exists before or after the given index, false otherwise.
+     */
+    private onlyOneLetterExistsBeforeOrAfter;
     /**
      * The split method takes a String line as an input. Firstly it creates a new sentence as currentSentence a new {@link Array}
      * as sentences. Then loops till the end of the line and checks some conditions;

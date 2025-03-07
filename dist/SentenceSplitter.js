@@ -15,10 +15,11 @@
     const Language_1 = require("nlptoolkit-dictionary/dist/Language/Language");
     class SentenceSplitter {
         constructor() {
-            this.SEPARATORS = "\n()[]{}\"'\u05F4\uFF02\u055B’”‘“–\u00AD\u200B\t&\u2009\u202F\uFEFF";
+            this.SEPARATORS = "\n()[]{}\"'\u05F4\uFF02\u055B’”‘“-–—\u00AD\u200B\t&\u2009\u202F\uFEFF";
             this.SENTENCE_ENDERS = ".?!…";
             this.PUNCTUATION_CHARACTERS = ",:;‚";
             this.APOSTROPHES = "'’‘\u055B";
+            this.HYPHENS = "-–—";
         }
         /**
          * The listContains method has a String array shortcuts which holds the possible abbreviations that might end with a '.' but not a
@@ -136,7 +137,8 @@
             let i = 0;
             let result = "";
             while (i < word.length) {
-                if (i < word.length - 2 && word.charAt(i) == word.charAt(i + 1) && word.charAt(i) == word.charAt(i + 2)) {
+                if (i < word.length - 2 && word.charAt(i) == word.charAt(i + 1) && word.charAt(i) == word.charAt(i + 2) &&
+                    word.charAt(i) == word.charAt(i + 3)) {
                     while (i < word.length - 1 && word.charAt(i) == word.charAt(i + 1)) {
                         i++;
                     }
@@ -208,6 +210,29 @@
             }
         }
         /**
+         * The onlyOneLetterExistsBeforeOrAfter method takes a String line and an integer i as inputs. Then, it returns true if
+         * only one letter exists before or after the given index, false otherwise.
+         *
+         * @param line String input to check.
+         * @param i    index.
+         * @return true if only one letter exists before or after the given index, false otherwise.
+         */
+        onlyOneLetterExistsBeforeOrAfter(line, i) {
+            if (i > 1 && i < line.length - 2) {
+                return this.PUNCTUATION_CHARACTERS.includes(line.charAt(i - 2)) || this.SEPARATORS.includes(line.charAt(i - 2)) ||
+                    line.charAt(i - 2) == ' ' || (this.SENTENCE_ENDERS.includes(line.charAt(i - 2)) || this.PUNCTUATION_CHARACTERS.includes(line.charAt(i + 2)) ||
+                    this.SEPARATORS.includes(line.charAt(i + 2)) || line.charAt(i + 2) == ' ') || this.SENTENCE_ENDERS.includes(line.charAt(i + 2));
+            }
+            else {
+                if (i == 1 && this.lowerCaseLetters().includes(line.charAt(0)) || this.upperCaseLetters().includes(line.charAt(0))) {
+                    return true;
+                }
+                else {
+                    return i == line.length - 2 && this.lowerCaseLetters().includes(line.charAt(line.length - 1));
+                }
+            }
+        }
+        /**
          * The split method takes a String line as an input. Firstly it creates a new sentence as currentSentence a new {@link Array}
          * as sentences. Then loops till the end of the line and checks some conditions;
          * If the char at ith index is a separator;
@@ -259,65 +284,70 @@
             let sentences = new Array();
             while (i < line.length) {
                 if (this.SEPARATORS.includes(line.charAt(i))) {
-                    if (this.APOSTROPHES.includes(line.charAt(i)) && currentWord != "" && this.isApostrophe(line, i)) {
+                    if (this.HYPHENS.includes(line.charAt(i)) && this.onlyOneLetterExistsBeforeOrAfter(line, i)) {
                         currentWord = currentWord + line.charAt(i);
                     }
                     else {
-                        if (currentWord != "") {
-                            currentSentence.addWord(new Word_1.Word(this.repeatControl(currentWord, webMode || emailMode)));
+                        if (this.APOSTROPHES.includes(line.charAt(i)) && currentWord != "" && this.isApostrophe(line, i)) {
+                            currentWord = currentWord + line.charAt(i);
                         }
-                        if (line.charAt(i) != '\n') {
-                            currentSentence.addWord(new Word_1.Word("" + line.charAt(i)));
-                        }
-                        currentWord = "";
-                        switch (line.charAt(i)) {
-                            case '{':
-                                curlyBracketCount++;
-                                break;
-                            case '}':
-                                curlyBracketCount--;
-                                break;
-                            case '\uFF02':
-                                specialQuotaCount++;
-                                break;
-                            case '\u05F4':
-                                specialQuotaCount--;
-                                break;
-                            case '“':
-                                specialQuotaCount++;
-                                break;
-                            case '”':
-                                specialQuotaCount--;
-                                break;
-                            case '‘':
-                                specialQuotaCount++;
-                                break;
-                            case '’':
-                                specialQuotaCount--;
-                                break;
-                            case '(':
-                                roundParenthesisCount++;
-                                break;
-                            case ')':
-                                roundParenthesisCount--;
-                                break;
-                            case '[':
-                                bracketCount++;
-                                break;
-                            case ']':
-                                bracketCount--;
-                                break;
-                            case '"':
-                                quotaCount = 1 - quotaCount;
-                                break;
-                            case '\'':
-                                apostropheCount = 1 - apostropheCount;
-                                break;
-                        }
-                        if (line.charAt(i) == '"' && bracketCount == 0 && specialQuotaCount == 0 && curlyBracketCount == 0 &&
-                            roundParenthesisCount == 0 && quotaCount == 0 && this.isNextCharUpperCaseOrDigit(line, i + 1)) {
-                            sentences.push(currentSentence);
-                            currentSentence = new Sentence_1.Sentence();
+                        else {
+                            if (currentWord != "") {
+                                currentSentence.addWord(new Word_1.Word(this.repeatControl(currentWord, webMode || emailMode)));
+                            }
+                            if (line.charAt(i) != '\n') {
+                                currentSentence.addWord(new Word_1.Word("" + line.charAt(i)));
+                            }
+                            currentWord = "";
+                            switch (line.charAt(i)) {
+                                case '{':
+                                    curlyBracketCount++;
+                                    break;
+                                case '}':
+                                    curlyBracketCount--;
+                                    break;
+                                case '\uFF02':
+                                    specialQuotaCount++;
+                                    break;
+                                case '\u05F4':
+                                    specialQuotaCount--;
+                                    break;
+                                case '“':
+                                    specialQuotaCount++;
+                                    break;
+                                case '”':
+                                    specialQuotaCount--;
+                                    break;
+                                case '‘':
+                                    specialQuotaCount++;
+                                    break;
+                                case '’':
+                                    specialQuotaCount--;
+                                    break;
+                                case '(':
+                                    roundParenthesisCount++;
+                                    break;
+                                case ')':
+                                    roundParenthesisCount--;
+                                    break;
+                                case '[':
+                                    bracketCount++;
+                                    break;
+                                case ']':
+                                    bracketCount--;
+                                    break;
+                                case '"':
+                                    quotaCount = 1 - quotaCount;
+                                    break;
+                                case '\'':
+                                    apostropheCount = 1 - apostropheCount;
+                                    break;
+                            }
+                            if (line.charAt(i) == '"' && bracketCount == 0 && specialQuotaCount == 0 && curlyBracketCount == 0 &&
+                                roundParenthesisCount == 0 && quotaCount == 0 && this.isNextCharUpperCaseOrDigit(line, i + 1)) {
+                                sentences.push(currentSentence);
+                                currentSentence = new Sentence_1.Sentence();
+                            }
                         }
                     }
                 }
@@ -388,7 +418,7 @@
                             }
                         }
                         else {
-                            if (line.charAt(i) == '-' && !webMode && roundParenthesisCount == 0 && this.isNextCharUpperCase(line, i + 1) && !this.isPreviousWordUpperCase(line, i - 1)) {
+                            if (this.HYPHENS.includes(line.charAt(i)) && !webMode && roundParenthesisCount == 0 && this.isNextCharUpperCase(line, i + 1) && !this.isPreviousWordUpperCase(line, i - 1)) {
                                 if (currentWord != "" && !Language_1.Language.DIGITS.includes(currentWord)) {
                                     currentSentence.addWord(new Word_1.Word(this.repeatControl(currentWord, emailMode)));
                                 }

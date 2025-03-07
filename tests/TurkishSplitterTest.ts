@@ -42,5 +42,15 @@ describe('TurkishSplitterTest', function() {
             assert.deepStrictEqual(1, splitter.split("1.87 cm boyunda ve 84 kg ağırlığındaydı").length);
             assert.deepStrictEqual(7, splitter.split("1.87 cm boyunda ve 84 kg ağırlığındaydı")[0].wordCount());
         });
+        it('testSplit8', function() {
+            assert.deepStrictEqual("AAA", splitter.split("AA piller, AAA pillerin yaklaşık üç kat kapasitesine sahiptir")[0].getWord(3).getName());
+            assert.deepStrictEqual("yakala", splitter.split("Topu atıp yakalaaaa diye bağırdı")[0].getWord(2).getName());
+        });
+        it('testSplit9', function() {
+            assert.deepStrictEqual(1, splitter.split("Bunun yanı sıra erkek t-shirt modellerini klasik giyim tarzına uyarlayarak kullanmak da mümkündür").length);
+            assert.deepStrictEqual(13, splitter.split("Bunun yanı sıra erkek t-shirt modellerini klasik giyim tarzına uyarlayarak kullanmak da mümkündür")[0].wordCount());
+            assert.deepStrictEqual(1, splitter.split("USB-C, USB-A’ya göre çok daha yüksek hızlarda aktarım sağlayabilir").length);
+            assert.deepStrictEqual(10, splitter.split("USB-C, USB-A’ya göre çok daha yüksek hızlarda aktarım sağlayabilir")[0].wordCount());
+        });
     });
 });
