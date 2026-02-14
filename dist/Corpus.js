@@ -68,7 +68,7 @@
         }
         /**
          * The addSentence method takes a Sentence as an input. It adds given input to sentences {@link Array} and loops
-         * through the each word in sentence and puts these words into wordList {@link CounterHashMap}.
+         * through each word in sentence and puts these words into wordList {@link CounterHashMap}.
          *
          * @param s Sentence type input that will be added to sentences {@link Array} and its words will be added
          * to wordList {@link CounterHashMap}.

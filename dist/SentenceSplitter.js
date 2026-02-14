@@ -91,7 +91,7 @@
          * @return true if next char is uppercase, false otherwise.
          */
         isNextCharUpperCase(line, i) {
-            while (i < line.length && (line.charAt(i) == ' ')) {
+            while (i < line.length && line.charAt(i) == ' ') {
                 i++;
             }
             if (i == line.length || (this.upperCaseLetters() + "\"\'").includes(line.charAt(i))) {
