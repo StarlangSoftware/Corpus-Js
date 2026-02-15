@@ -1,6 +1,6 @@
 {
   "name": "nlptoolkit-corpus",
-  "version": "1.0.11",
+  "version": "1.0.12",
   "description": "Corpus Library",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -19,13 +19,14 @@
   "homepage": "https://github.com/StarlangSoftware/Corpus-Js#readme",
   "devDependencies": {
     "@types/mocha": "^9.0.0",
+    "@types/node": "^25.2.3",
     "mocha": "^9.1.3",
     "ts-node": "^10.4.0",
-    "typescript": "^4.5.2"
+    "typescript": "^5.9.3"
   },
   "dependencies": {
-    "nlptoolkit-datastructure": "^1.0.8",
-    "nlptoolkit-dictionary": "^1.0.13",
-    "nlptoolkit-util": "^1.0.11"
+    "nlptoolkit-datastructure": "^1.0.9",
+    "nlptoolkit-dictionary": "^1.0.14",
+    "nlptoolkit-util": "^1.0.12"
   }
 }
